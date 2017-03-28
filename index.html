@@ -8,7 +8,6 @@
 <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
 <script src="https://npmcdn.com/aframe-template-component@3.0.1"></script>
 <script src="components/set-image.js"></script>
-<script src="components/update-raycaster.js"></script>
 </head>
 <body class="a-body aframe-inspector-opened">
 <a-scene class="fullscreen" canvas="" inspector="" keyboard-shortcuts="" screenshot="" vr-mode-ui="">
@@ -30,16 +29,15 @@
             event-set__4="_event: mouseleave; scale: 1 1 1"
             set-image="on: click; target: #image-360; src: {{ src }}"
             sound="on: click; src: #click-sound"
-            update-raycaster="#cursor"&gt;&lt;/a-plane&gt;
         </script>
 </a-assets>
  
 <a-sky id="image-360" radius="10" src="#city" material="" geometry="" scale="" position="" rotation="" visible="" data-set-image-fade-setup="true" animation__fade=""></a-sky>
  
 <a-entity id="links" layout="type: line; margin: 1.5" position="0 -1 -4" rotation="" scale="" visible="">
-<a-entity template="src: #link" data-src="#cubes" data-thumb="#cubes-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #cubes-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #cubes" sound="on: click; src: #click-sound" update-raycaster="#cursor" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
-<a-entity template="src: #link" data-src="#city" data-thumb="#city-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #city-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #city" sound="on: click; src: #click-sound" update-raycaster="#cursor" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
-<a-entity template="src: #link" data-src="#sechelt" data-thumb="#sechelt-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #sechelt-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #sechelt" sound="on: click; src: #click-sound" update-raycaster="#cursor" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
+<a-entity template="src: #link" data-src="#cubes" data-thumb="#cubes-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #cubes-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #cubes" sound="on: click; src: #click-sound" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
+<a-entity template="src: #link" data-src="#city" data-thumb="#city-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #city-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #city" sound="on: click; src: #click-sound" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
+<a-entity template="src: #link" data-src="#sechelt" data-thumb="#sechelt-thumb" position="" rotation="" scale="" visible=""><a-plane class="link" height="1" width="1" material="shader: flat; src: #sechelt-thumb" event-set__1="_event: mousedown; scale: 1 1 1" event-set__2="_event: mouseup; scale: 1.2 1.2 1" event-set__3="_event: mouseenter; scale: 1.2 1.2 1" event-set__4="_event: mouseleave; scale: 1 1 1" set-image="on: click; target: #image-360; src: #sechelt" sound="on: click; src: #click-sound" geometry="" position="" rotation="" scale="" visible=""></a-plane></a-entity>
 </a-entity>
  
 <a-entity camera="" look-controls="" position="" rotation="" scale="" visible="">
