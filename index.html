@@ -1,26 +1,122 @@
-<html>
+<!DOCTYPE html>
+<html >
 <head>
-  <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-  <title>My A-Frame Scene</title>
-<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-<script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
-
-<script src="https://raw.githubusercontent.com/mayognaise/aframe-mouse-cursor-component/master/index.js"></script>
+  <meta charset="UTF-8">
+  <title>VR Nav</title>
+  <script src="https://rawgit.com/aframevr/aframe/b813db0614ac2b518e547105e810b5b6eccfe1c8/dist/aframe.min.js"></script>
+  <script src="asd.js"></script>
+  
+  <script>
+    AFRAME.registerComponent('gifsSrc', {
+      //dependencies: ['material'],
+      schema: {
+        canvas: { default: '' },
+        src: { default: '' }
+      },
+      init: function(){
+        this.startTime = 0;
+        this.nextFrameTime = 0;
+        this.frameIdx = 0;
+        this.frameCnt = 0;
+        this.delayTimes = null;
+        this.infinity = false;
+        this.loopCnt = 0;
+        this.width = 0;
+        this.height = 0;
+        this.frames = null;
+        this.cnv = null;
+        this.rafId = 0;
+        this.initFlg = true;
+      },
+      update: function () {
+        if (this.initFlg) {
+          this.initFlg = false;
+          this.cnv = document.querySelector(this.data.canvas);
+          loadGIF(this.data.src, function (times, cnt, frames) {
+            this.delayTimes = times;
+            cnt ? this.loopCnt = cnt : this.infinity = true;
+            this.frames = frames;
+            this.frameCnt = times.length;
+            this.cnv.width = this.width = frames[0].width;
+            this.cnv.height = this.height = frames[0].width;
+            //document.body.appendChild(this.cnv);
+            var span = document.createElement('span');
+            span.style.position = 'absolute';
+            span.style.left = span.style.top = 0;
+            span.style.margin = '5px';
+            span.style.fontSize = '20px';
+            span.style.color = 'white';
+            span.textContent = 'canvas preview';
+            //document.body.appendChild(span);
+            this.ctx = this.cnv.getContext('2d');
+            this.ctx.drawImage(frames[0], 0, 0);
+            this.texture = new THREE.Texture(this.cnv);
+            this.texture.minFilter = THREE.LinearFilter;
+            this.texture.magFilter = THREE.LinearFilter;
+            this.el.object3D.material = new THREE.MeshBasicMaterial({map:this.texture});
+            this.startTime = Date.now();
+            this.el.sceneEl.addBehavior(this);
+          }.bind(this), function (err) { console.log(err) });
+        } else {
+          (Date.now() - this.startTime) >= this.nextFrameTime && this.nextFrame.call(this);
+        }
+      },
+      nextFrame: function () {
+        this.ctx.drawImage(this.frames[this.frameIdx], 0, 0);
+        this.texture.needsUpdate = true;
+        while ((Date.now() - this.startTime) >= this.nextFrameTime) {
+          this.nextFrameTime += this.delayTimes[this.frameIdx++];
+          if ((this.infinity || this.loopCnt) && this.frameCnt <= this.frameIdx) {
+            this.frameIdx = 0;
+            this.loopCnt && --this.loopCnt && !this.loopCnt && this.rafId && cancelAnimationFrame(this.rafId);
+          }
+        }
+      }
+    });
+  </script>
 </head>
 <body>
-  <a-scene>
-    <a-sky color="black"></a-sky>
-    <a-box position="0 3.5 -2" rotation="30 30 0" color="skyblue"
-             event-set__enter="_event: mouseenter; material.color: yellowgreen; scale: 3 1 1"
-             event-set__leave="_event: mouseleave; material.color: skyblue; scale: 1 1 1">
-        <a-animation attribute="rotation" begin="click" dur="500" fill="backwards" to="30 30 360"></a-animation>
-      </a-box>
-    <a-entity position="0 1.8 4">
-        <a-entity camera look-controls mouse-cursor>
-          <a-cursor fuse="true" color="yellow"></a-cursor>
-        </a-entity>
-      </a-entity>
-  </a-scene>
+<script>
+  AFRAME.registerComponent('set-sky', {
+    schema: {default:''},
+    init() {
+      const sky = document.querySelector('a-sky');
+      this.el.addEventListener('click', () => {
+        david(this.data);
+        sky.setAttribute('src', this.data);
+      });
+    }
+  });
+</script>
+<a-scene>
+      <a-assets>
+    <canvas id="cnv" width="2" height="2"></canvas>
+  </a-assets>
+
+  <a-camera position="0 0 0">
+    <a-cursor color="#4CC3D9" fuse="true" timeout="1"></a-cursor>
+  </a-camera>                                     <!--x=palcostao-> y=parriba z=pati-->
+  <a-entity position="-15 0 -10" geometry="primitive: plane; width: 6; height: 6" gifsSrc="canvas: #cnv; src: lusho.gif"></a-entity>
+  
+  <a-plane color="#F44336" src="https://c3.staticflickr.com/2/1475/26239222850_cabde81c39_k.jpg" position="-10 0 -10" visible="true" set-sky="https://c3.staticflickr.com/2/1475/26239222850_cabde81c39_k.jpg"></a-plane>
+  <a-plane color="#FFEB3B" position="10 0 10" rotation="0 200 0" visible="false" set-sky="https://c2.staticflickr.com/2/1688/25044226823_53c979f8a1_k.jpg"></a-plane>
+  <a-sky src="https://c2.staticflickr.com/2/1688/25044226823_53c979f8a1_k.jpg"></a-sky>
+</a-scene>
+  <script>
+    function david(data)
+    {
+      //un tiempo de espera si sigue en imagen de carga pz cambia, 
+      if(data=="https://c2.staticflickr.com/2/1688/25044226823_53c979f8a1_k.jpg")
+      {
+      document.getElementsByTagName("a-plane")[0].setAttribute('visible', "true");
+      document.getElementsByTagName("a-plane")[1].setAttribute('visible', "false");
+      }
+      else if(data=="https://c3.staticflickr.com/2/1475/26239222850_cabde81c39_k.jpg")
+      {
+      document.getElementsByTagName("a-plane")[0].setAttribute('visible', "false");
+      document.getElementsByTagName("a-plane")[1].setAttribute('visible', "true");
+      }
+    }
+  </script>
 </body>
 </html>
